@@ -1,14 +1,6 @@
-import torch
 from sklearn.datasets import load_breast_cancer
 import pandas as pd
-import numpy as np
-import torch
-from torch.autograd import Variable
-import torch.utils.data as data_utils
-import torch.nn.init as init
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
+from sklearn.model_selection import train_test_split
 
 # create Neural Network to classify benign og malignant breast cancer in women
 
@@ -17,10 +9,9 @@ data = load_breast_cancer()
 
 df = pd.DataFrame(data.data, columns=data.feature_names)
 df['target'] = pd.Series(data.target)
-
-drop_columns = data.drop(["id", "diagnosis", "Unnamed: 32"], axis=1)
-diagnosis = {"M": 1, "B": 0}
-y = data["diagnosis"].replace(diagnosis)
+x = df
+y = df['target']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=85)
 
 
 """
