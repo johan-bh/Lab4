@@ -38,22 +38,23 @@ test_set = torch.from_numpy(transformed).float()
 test_valid = torch.from_numpy(y_test).float()
 
 # Neural Network specifications
-H = 10
+H = 6
+
 dimemsions_in = x_train.shape[1]
 dimemsions_out = 1
 
 # The Neural Network
 model = torch.nn.Sequential(
     torch.nn.Linear(dimemsions_in, H),
-    torch.nn.ReLU(),
+    torch.nn.Tanh(),
     torch.nn.Linear(H, H),
-    torch.nn.ReLU(),
+    torch.nn.Tanh(),
     torch.nn.Linear(H, H),
-    torch.nn.ReLU(),
+    torch.nn.Tanh(),
     torch.nn.Linear(H, dimemsions_out),)
 
 # Optimizer, learning rate, loss function and number of iterations
-loss_fn = torch.nn.MSELoss(reduction='mean')
+loss_fn = torch.nn.MSELoss(reduction='sum')
 learning_rate = 0.0004
 num_epochs = 300
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
