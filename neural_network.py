@@ -10,6 +10,7 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+from pprint import pprint
 import matplotlib.pyplot as plt
 
 # create Neural Network to classify benign og malignant breast cancer in women
@@ -44,20 +45,16 @@ layer_dimensions = [dimensions_in, 25, 10, dimensions_out]
 x = torch.tensor(np.expand_dims(x_train,1), dtype=torch.float32, device=device)
 y = torch.tensor(np.expand_dims(y_train,1), dtype=torch.float32, device=device)
 
-print(x_train)
-print(y_train)
-print(y_train.shape)
-
 H = 5
 
 model = torch.nn.Sequential(
-    torch.nn.Linear(1, H),
+    torch.nn.Linear(30, H),
     torch.nn.ReLU(),
     torch.nn.Linear(H, H),
     torch.nn.ReLU(),
     torch.nn.Linear(H, H),
     torch.nn.ReLU(),
-    torch.nn.Linear(H, 1),
+    torch.nn.Linear(H,1),
 )
 model.to(device)
 loss_fn = torch.nn.MSELoss(reduction='mean')
@@ -80,3 +77,4 @@ for t in range(T):
     loss.backward()
 
     optimizer.step() 
+
