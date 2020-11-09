@@ -3,3 +3,5 @@ import sklearn.datasets
 
 
 # create Neural Network to classify benign og malignant breast cancer in women
+
+cancer_data
