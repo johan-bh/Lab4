@@ -9,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 
+
 data = load_breast_cancer()
 x, y = data.data, data.target
 
@@ -18,6 +19,7 @@ scaler = StandardScaler()
 x_train = scaler.fit_transform(x_train)
 x_test = scaler.transform(x_test)
 
+# Define input dimensions
 dim_input = x_train.shape[1]
 
 # Neural network model
@@ -30,7 +32,7 @@ loss_fn = torch.nn.BCEWithLogitsLoss()
 num_epochs = 300
 optimizer = torch.optim.Adam(model.parameters())
 
-
+# Define train/test variables after standardization
 x_train = torch.from_numpy(x_train.astype(np.float32))
 x_test = torch.from_numpy(x_test.astype(np.float32))
 y_train = torch.from_numpy(y_train.astype(np.float32)).reshape(-1,1)
@@ -80,3 +82,6 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(['train', 'test'], loc='upper left')
 plt.show()
+
+index, value = max(enumerate(nn_log["accuracy_value"]), key=operator.itemgetter(1))
+print("Higgest accuracy score: {} at epoch: {}".format(value, index))

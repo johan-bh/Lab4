@@ -30,7 +30,7 @@ scaler = StandardScaler()
 # Scale and transform training data
 transformed = scaler.fit_transform(x_train)
 train = data_utils.TensorDataset(torch.from_numpy(transformed).float(),torch.from_numpy(y_train).float())
-dataloader = data_utils.DataLoader(train, batch_size=128, shuffle=False)
+dataloader = data_utils.DataLoader(train, batch_size=120, shuffle=False)
 
 # Scale and transform test data
 transformed = scaler.fit_transform(x_test)
@@ -56,7 +56,7 @@ model = torch.nn.Sequential(
 # Optimizer, learning rate, loss function and number of iterations
 loss_fn = torch.nn.MSELoss(reduction='sum')
 learning_rate = 0.0004
-num_epochs = 300
+num_epochs = 200
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 # Run the NN and track accuracy, loss, etc. throughout each epoch.
