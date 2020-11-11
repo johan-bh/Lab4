@@ -36,10 +36,13 @@ x_test = torch.from_numpy(x_test.astype(np.float32))
 y_train = torch.from_numpy(y_train.astype(np.float32)).reshape(-1,1)
 y_test = torch.from_numpy(y_test.astype(np.float32)).reshape(-1,1)
 
-nn_log = {"loss": [], "loss_value": []}
+nn_log = {"loss": [], "accuracy": [], "loss_value": [], "accuracy_value": []}
 
 for epoch in range(num_epochs):
     y_pred = model(x_train)
+    p_train = (y_pred.detach().numpy() > 0)
+    train_accuracy = np.mean(y_train.numpy() == p_train)
+
     loss = loss_fn(y_pred,y_train)
     optimizer.zero_grad()
     loss.backward()
@@ -47,13 +50,27 @@ for epoch in range(num_epochs):
 
     y_val_pred = model(x_test)
     loss_value = loss_fn(y_val_pred,y_test)
+    p_test = (y_val_pred.detach().numpy() > 0)
+    test_accuracy = np.mean(y_test.numpy() == p_test)
 
     # Append metrics for each epoch
     nn_log["loss"].append(loss.item())
+    nn_log["accuracy"].append(train_accuracy*100)
     nn_log["loss_value"].append(loss_value.item())
+    nn_log["accuracy_value"].append(test_accuracy*100)
 
     # Print the metrics for each epoch
-    print("Loss, accuracy, val loss, val acc at epoch", epoch + 1, nn_log["loss"][-1], nn_log["loss_value"][-1])
+    print("Loss, accuracy, val loss, val acc at epoch", epoch + 1, nn_log["loss"][-1],
+          nn_log["accuracy"][-1], nn_log["loss_value"][-1], nn_log["accuracy_value"][-1])
+
+# Plot accuracy by epochs
+plt.plot(nn_log['accuracy'])
+plt.plot(nn_log['accuracy_value'])
+plt.title('Model accuracy')
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.show()
 
 # Plot loss by epochs
 plt.plot(nn_log['loss'])
